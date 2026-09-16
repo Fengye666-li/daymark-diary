@@ -1,0 +1,16 @@
+node_modules
+dist
+.pnpm-store
+src-tauri/target
+src-tauri/gen
+*.log
+.DS_Store
+Thumbs.db
+.idea
+.vscode
+.github-token
+.updater-key
+.updater-key.pub
+.tools
+*.exe
+*.exe.sig

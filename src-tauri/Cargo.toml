@@ -1,0 +1,23 @@
+[package]
+name = "daymark"
+version = "0.3.0"
+description = "A local-first personal diary desktop application"
+authors = ["Daymark"]
+edition = "2021"
+
+[lib]
+name = "daymark_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+chrono = "0.4"
+rusqlite = { version = "0.32", features = ["bundled"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tauri = { version = "2", features = [] }
+tauri-plugin-process = "2"
+tauri-plugin-updater = "2"
+uuid = { version = "1", features = ["v4"] }

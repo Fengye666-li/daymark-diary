@@ -1,0 +1,66 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "日迹",
+  "version": "0.3.0",
+  "identifier": "com.daymark.diary",
+  "build": {
+    "beforeDevCommand": "pnpm dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "pnpm build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "日迹",
+        "width": 1440,
+        "height": 900,
+        "minWidth": 960,
+        "minHeight": 640,
+        "center": true,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "createUpdaterArtifacts": true,
+    "targets": "all",
+    "category": "Productivity",
+    "shortDescription": "本地优先的个人日记应用",
+    "longDescription": "日迹是一款数据完全保存在本机的日记应用，支持日历、Markdown、全文搜索和回收站。",
+    "windows": {
+      "webviewInstallMode": {
+        "type": "embedBootstrapper",
+        "silent": true
+      },
+      "nsis": {
+        "installMode": "currentUser",
+        "languages": [
+          "SimpChinese",
+          "English"
+        ]
+      }
+    },
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDQ1MzY1NzkwRDFDQ0JCOUIKUldTYnU4elJrRmMyUmV4aFBaYlJJVE5NMmtnSTVhd0pqelQ5RDRhcFlNSHRmNGluQnFFNVFldlkK",
+      "endpoints": [
+        "https://github.com/Fengye666-li/daymark-diary/releases/latest/download/latest.json"
+      ]
+    }
+  }
+}
