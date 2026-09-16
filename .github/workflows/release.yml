@@ -44,5 +44,33 @@ jobs:
           releaseBody: "自动构建版本 v__VERSION__"
           releaseDraft: false
           prerelease: false
-          includeUpdaterJson: true
           args: --bundles nsis
+
+      - name: Publish updater manifest
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $version = (Get-Content package.json -Raw | ConvertFrom-Json).version
+          $tag = "v$version"
+          $releaseJson = gh api "repos/$env:GITHUB_REPOSITORY/releases/tags/$tag"
+          $release = $releaseJson | ConvertFrom-Json
+          $installer = $release.assets | Where-Object { $_.name -like "*setup.exe" } | Select-Object -First 1
+          $signatureAsset = $release.assets | Where-Object { $_.name -like "*.exe.sig" } | Select-Object -First 1
+          if (-not $installer -or -not $signatureAsset) {
+            throw "Release assets are incomplete."
+          }
+          $signature = gh api --header "Accept: application/octet-stream" $signatureAsset.url
+          $manifest = @{
+            version = $version
+            notes = "日迹 v$version"
+            pub_date = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+            platforms = @{
+              "windows-x86_64" = @{
+                signature = $signature.Trim()
+                url = $installer.browser_download_url
+              }
+            }
+          } | ConvertTo-Json -Depth 6
+          Set-Content -LiteralPath latest.json -Value $manifest -Encoding utf8
+          gh release upload $tag latest.json --clobber
